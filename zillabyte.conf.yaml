@@ -1,0 +1,3 @@
+language: ruby
+script: component.rb
+flow_type: component
