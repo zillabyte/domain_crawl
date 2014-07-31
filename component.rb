@@ -35,9 +35,11 @@ crawl_stream = url_stream.each do
           url = page.url
           unless visited[page.url.to_s.gsub(/\/$/,'')] 
             if !page.redirect?
-              visited[page.url.to_s.gsub(/\/$/,'')] = true
               log "crawling: #{page.url}"
-              emit(:url => url.to_s, :html => page.body) #, :domain => url.host.to_s)  
+              page.links.select do |dest_url|
+                emit(:source_url => url.to_s, :dest_url => dest_url.to_s)
+              end
+              visited[page.url.to_s.gsub(/\/$/,'')] = true
             end
           end
         end
@@ -89,8 +91,7 @@ end
 
 # Declare the output schema for the component
 crawl_stream.outputs do
-  name "crawl"
-  field "url", :string
-  field "html", :string
-  #  field "domain", :string
+  name "links"
+  field "source_url", :string
+  field "dest_url", :string
 end
