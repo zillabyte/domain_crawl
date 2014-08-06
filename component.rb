@@ -29,7 +29,7 @@ crawl_stream = url_stream.each do
       pages_left = max_crawl
       visited = {}
       
-      Anemone.crawl(base_url, :read_timeout => 10, :skip_query_strings => true) do |anemone|
+      Anemone.crawl(base_url, :read_timeout => 10, :skip_query_strings => true, :obey_robots_txt => true) do |anemone|
   
         anemone.on_every_page do |page|
           url = page.url
